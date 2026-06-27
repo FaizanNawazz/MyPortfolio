@@ -1,0 +1,302 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ bio.name }} | Portfolio</title>
+    <meta name="description" content="{{ bio.description|truncatewords:20 }}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'portfolio/css/styles.css' %}">
+</head>
+
+<body>
+    <!-- Radial Glow Effects in Background -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <!-- Header Navigation -->
+    <header class="main-header">
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <span class="logo-accent">&lt;</span>{{ bio.name }}<span class="logo-accent"> /&gt;</span>
+            </a>
+            <nav class="nav-menu" id="nav-menu">
+                <a href="#about" class="nav-link active">About</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#experience" class="nav-link">Experience</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#education" class="nav-link">Education</a>
+            </nav>
+            <div class="header-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark/Light Mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <a href="#contact" class="btn btn-sm btn-outline">Hire Me</a>
+            </div>
+            <button class="mobile-nav-toggle" id="mobile-toggle" aria-label="Toggle Mobile Navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main>
+        <!-- Hero Section -->
+        <section id="about" class="hero-section">
+            <div class="container grid hero-grid">
+                <div class="hero-content">
+                    <div class="badge-container">
+                        <span class="badge badge-primary">MERN Stack Specialist</span>
+                        <span class="badge badge-secondary">Webwaves Media</span>
+                    </div>
+                    <h1 class="hero-title">
+                        I am <span class="text-gradient">{{ bio.name }}</span>
+                    </h1>
+                    <h2 class="hero-subtitle">{{ bio.job_title }}</h2>
+                    <p class="hero-description">{{ bio.description }}</p>
+
+                    <div class="hero-buttons">
+                        <a href="#projects" class="btn btn-primary">
+                            <span>View Projects</span> <i class="fa-solid fa-arrow-down"></i>
+                        </a>
+                        <a href="#contact" class="btn btn-outline">
+                            <span>Get In Touch</span> <i class="fa-solid fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-avatar">
+                    <div class="avatar-frame">
+                        <img src="{{ bio.profile_picture }}" alt="{{ bio.name }}" class="avatar-img">
+                        <div class="glow-ring"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title"><span class="text-gradient">Technical Expertise</span></h2>
+                    <p class="section-subtitle">A curated list of my core programming languages, frameworks, and
+                        tooling.</p>
+                </div>
+
+                <div class="skills-grid">
+                    {% for skill in skills_list %}
+                    <div class="skill-card card">
+                        <div class="skill-info">
+                            <span class="skill-name">{{ skill.name }}</span>
+                            <span class="skill-percentage">{{ skill.proficiency }}%</span>
+                        </div>
+                        <div class="skill-progress-bg">
+                            <div class="skill-progress-bar" style="width: 0%;" data-width="{{ skill.proficiency }}%">
+                            </div>
+                        </div>
+                        <div class="skill-tag-category">{{ skill.category }}</div>
+                    </div>
+                    {% empty %}
+                    <p class="no-data">No skills registered yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="experience-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title"><span class="text-gradient">Professional Experience</span></h2>
+                    <p class="section-subtitle">My professional journey and industry contributions as a developer.</p>
+                </div>
+
+                <div class="timeline">
+                    {% for exp in experiences_list %}
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content card">
+                            <span class="timeline-duration">{{ exp.duration }}</span>
+                            <h3 class="timeline-degree">{{ exp.title }}</h3>
+                            <div class="project-tech-stack" style="margin-top: 0.5rem; margin-bottom: 0.75rem;">
+                                {% for tech in exp.get_tech_list %}
+                                <span class="tech-pill">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                            <p class="timeline-desc"
+                                style="white-space: pre-line; line-height: 1.6; color: var(--text-secondary);">{{
+                                exp.description }}</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="no-data">No professional experience registered yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects & Experience Section -->
+        <section id="projects" class="projects-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title"><span class="text-gradient">Featured Work</span></h2>
+                    <p class="section-subtitle">A showcase of lab simulations, games, database models, and web
+                        applications.</p>
+
+                    <!-- Filter Tabs -->
+                    <div class="filter-tabs">
+                        <button class="filter-btn active" data-filter="all">All Work</button>
+                        <button class="filter-btn" data-filter="experience">Experience</button>
+                        <button class="filter-btn" data-filter="personal">Personal Projects</button>
+                        <button class="filter-btn" data-filter="lab">Academic Labs</button>
+                    </div>
+                </div>
+
+                <div class="projects-grid">
+                    {% for project in projects_list %}
+                    <div class="project-card card"
+                        data-category="{% if project.item_type == 'experience' %}experience{% elif project.item_type == 'academic' or 'lab' in project.duration|lower or 'operating system' in project.title|lower or 'retail' in project.title|lower %}lab{% else %}personal{% endif %}">
+                        <div class="project-header">
+                            <span class="project-type">
+                                {% if project.item_type == 'experience' %}
+                                <i class="fa-solid fa-briefcase"></i> Professional Experience
+                                {% elif project.item_type == 'academic' or 'lab' in project.duration|lower %}
+                                <i class="fa-solid fa-graduation-cap"></i> Academic Project
+                                {% else %}
+                                <i class="fa-solid fa-code"></i> Personal Project
+                                {% endif %}
+                            </span>
+                            <span class="project-duration">{{ project.duration }}</span>
+                        </div>
+                        <h3 class="project-title">{{ project.title }}</h3>
+                        <p class="project-description">{{ project.description }}</p>
+
+                        <div class="project-tech-stack">
+                            {% for tech in project.get_tech_list %}
+                            <span class="tech-pill">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="project-footer">
+                            {% if project.link %}
+                            <a href="{{ project.link }}" target="_blank" rel="noopener noreferrer" class="project-link">
+                                <span>Codebase</span> <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                            {% else %}
+                            <span class="project-link-disabled">Protected Repository</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="no-data">No projects registered yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="education-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title"><span class="text-gradient">Academic Journey</span></h2>
+                    <p class="section-subtitle">My ongoing education and qualifications in Computer Science.</p>
+                </div>
+
+                <div class="timeline">
+                    {% for edu in education_list %}
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content card">
+                            <span class="timeline-duration">{{ edu.duration }}</span>
+                            <h3 class="timeline-degree">{{ edu.degree }}</h3>
+                            <h4 class="timeline-institution">{{ edu.institution }}</h4>
+                            {% if edu.description %}
+                            <p class="timeline-desc">{{ edu.description }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="no-data">No education details registered yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <div class="contact-card card">
+                    <div class="contact-info">
+                        <h2 class="contact-title">Let's build something <span class="text-gradient">incredible</span>
+                            together</h2>
+                        <p class="contact-desc">
+                            Looking for a dynamic developer to build immersive dashboards, Unity simulations, or robust
+                            databases? Reach out, and let's discuss details!
+                        </p>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span>thefaiziansari@gmail.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span>Lahore, Pakistan</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form class="contact-form"
+                        onsubmit="event.preventDefault(); alert('Message sent! (Simulated backend contact handling)');">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" required placeholder="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" rows="4" required
+                                placeholder="Hi Alex, I'd love to collaborate on a dashboard..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <span>Send Message</span> <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-container">
+            <p>&copy; 2026 {{ bio.name }}. All Rights Reserved.</p>
+            <div class="social-links">
+                <a href="https://github.com/FaizanNawazz/" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/faizan-nawaz-16b348257/" aria-label="LinkedIn"><i
+                        class="fa-brands fa-linkedin"></i></a>
+
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="{% static 'portfolio/js/main.js' %}"></script>
+</body>
+
+</html>
